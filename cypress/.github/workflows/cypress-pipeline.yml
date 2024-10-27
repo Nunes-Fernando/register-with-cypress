@@ -1,0 +1,23 @@
+#nome da pipeline
+name: Run Basic Test
+
+#momento que será executada
+on:
+    push:
+      branches: [main]
+
+# o que vai ser feito nessa pipe
+jobs:
+    cypress-run: 
+        runs-on: ubuntu-latest
+
+        steps: 
+            - name: Checkout do projeto
+              uses: actions/checkout@v3
+      
+            - name: Instalar dependências
+              run: npm install
+      
+            - name: Executar testes do Cypress
+              run: npx cypress run
+        
