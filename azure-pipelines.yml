@@ -1,22 +1,28 @@
-#nome da pipeline
+# Nome da pipeline
 name: Run Basic Test
 
-#momento que será executada
-on:
-    push:
-      branches: [main]
+# Gatilho de execução
+trigger:
+  branches:
+    include:
+      - main
 
-# o que vai ser feito nessa pipe
+# Definição dos trabalhos
 jobs:
-    cypress-run: 
-        runs-on: ubuntu-latest
+  - job: cypress-run
+    pool:
+      vmImage: 'ubuntu-latest'
 
-        steps: 
-            - name: Checkout do projeto
-              uses: actions/checkout@v3
+    steps:
+      - task: UseNode@1
+        inputs:
+          version: '16.x'
+          checkLatest: true
+
+      - script: |
+          npm install
+        displayName: 'Instalar dependências'
       
-            - name: Instalar dependências
-              run: npm install
-      
-            - name: Executar testes do Cypress
-              run: npx cypress run
+      - script: |
+          npx cypress run
+        displayName: 'Executar testes do Cypress'
